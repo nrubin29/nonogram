@@ -33,7 +33,7 @@ class _CellComponentState extends State<CellComponent> {
                     color: status == CellStatus.filled
                         ? Colors.black
                         : status == CellStatus.crossed
-                            ? Colors.grey.shade300
+                            ? Colors.grey.shade500
                             : Colors.white))));
   }
 }
