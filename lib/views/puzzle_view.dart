@@ -3,7 +3,7 @@ import 'package:nonogram/components/cell_component.dart';
 import 'package:nonogram/components/grid_component.dart';
 import 'package:nonogram/util/nonogram.dart';
 
-class PuzzleView extends StatelessWidget {
+class PuzzleView extends StatefulWidget {
   final Nonogram _puzzle;
 
   PuzzleView({Key key})
@@ -11,42 +11,66 @@ class PuzzleView extends StatelessWidget {
         super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    print('\n$_puzzle');
+  State<StatefulWidget> createState() => _PuzzleViewState();
+}
 
-    return Row(children: [
-      Column(children: [
-        SizedBox(height: CELL_SIZE * 0.75 * _puzzle.maxNumColClues - 5),
-        Column(
-            children: _puzzle.board
-                .asMap()
-                .entries
-                .map((entry) => Padding(
-                    padding: EdgeInsets.symmetric(vertical: 4),
-                    child: Row(
-                        children: _puzzle
-                            .rowCluesIterable(entry.key)
-                            .map((e) => Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 2),
-                                child: e == 0
-                                    ? SizedBox(width: 9)
-                                    : Text(e.toString())))
-                            .toList(growable: false))))
-                .toList(growable: false))
-      ]),
-      Column(children: [
-        Column(
-            children: _puzzle.colCluesIterable
-                .map((clueRow) => Row(
-                    children: clueRow
-                        .map((clue) => Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 7.5),
-                            child: clue == 0
-                                ? SizedBox(width: 9)
-                                : Text(clue.toString())))
-                        .toList(growable: false)))
-                .toList(growable: false)),
-        GridComponent(puzzle: _puzzle)
+class _PuzzleViewState extends State<PuzzleView> {
+  Nonogram get puzzle => widget._puzzle;
+
+  @override
+  Widget build(BuildContext context) {
+    print('\n$puzzle');
+
+    return Column(children: [
+      RaisedButton(
+          child: Text('Fill'),
+          onPressed: () {
+            setState(() {
+              CELL_ACTION = CellStatus.filled;
+            });
+          }),
+      RaisedButton(
+          child: Text('Cross'),
+          onPressed: () {
+            setState(() {
+              CELL_ACTION = CellStatus.crossed;
+            });
+          }),
+      SizedBox(height: 10),
+      Row(children: [
+        Column(children: [
+          SizedBox(height: CELL_SIZE * 0.75 * puzzle.maxNumColClues - 5),
+          Column(
+              children: puzzle.board
+                  .asMap()
+                  .entries
+                  .map((entry) => Padding(
+                      padding: EdgeInsets.symmetric(vertical: 4),
+                      child: Row(
+                          children: puzzle
+                              .rowCluesIterable(entry.key)
+                              .map((e) => Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 2),
+                                  child: e == 0
+                                      ? SizedBox(width: 9)
+                                      : Text(e.toString())))
+                              .toList(growable: false))))
+                  .toList(growable: false))
+        ]),
+        Column(children: [
+          Column(
+              children: puzzle.colCluesIterable
+                  .map((clueRow) => Row(
+                      children: clueRow
+                          .map((clue) => Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 7.5),
+                              child: clue == 0
+                                  ? SizedBox(width: 9)
+                                  : Text(clue.toString())))
+                          .toList(growable: false)))
+                  .toList(growable: false)),
+          GridComponent(puzzle: puzzle)
+        ])
       ])
     ]);
   }
