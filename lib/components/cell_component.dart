@@ -8,6 +8,10 @@ enum CellStatus { empty, filled, crossed }
 CellStatus CELL_ACTION = CellStatus.filled;
 
 class CellComponent extends StatefulWidget {
+  final int row, col;
+
+  CellComponent({Key key, @required this.row, @required this.col});
+
   @override
   State<StatefulWidget> createState() => _CellComponentState();
 }
@@ -29,7 +33,13 @@ class _CellComponentState extends State<CellComponent> {
             height: CELL_SIZE,
             child: Container(
                 decoration: BoxDecoration(
-                    border: Border.all(width: 0.5),
+                    border: Border(
+                        top: BorderSide(width: 0.5),
+                        right: BorderSide(
+                            width: (widget.col + 1) % 5 == 0 ? 1.5 : 0.5),
+                        bottom: BorderSide(
+                            width: (widget.row + 1) % 5 == 0 ? 1.5 : 0.5),
+                        left: BorderSide(width: 0.5)),
                     color: status == CellStatus.filled
                         ? Colors.black
                         : status == CellStatus.crossed

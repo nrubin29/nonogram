@@ -11,15 +11,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Nonogram',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-        fontFamily: 'Courier New',
-      ),
-      home: Scaffold(
-          appBar: AppBar(title: Text('Nonogram')),
-          body: Center(
-              child:
-                  Container(padding: EdgeInsets.all(10), child: PuzzleView()))),
+          primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity),
+      home:
+          Scaffold(appBar: AppBar(title: Text('Nonogram')), body: PuzzleView()),
     );
   }
 }
